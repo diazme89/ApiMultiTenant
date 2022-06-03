@@ -60,7 +60,26 @@ Devuelve todos los registros de la tabla usuarios pero usando los modelos genera
 ```
 # Ejemplos de llamadas a los servicios implementados
 
-localhost:8080/users?slug=tenant1
+http://localhost:8080/v1/users?slug=tenant1
 
-localhost:8080/usersmodel?slug=tenant2
+http://localhost:8080/v1/usersmodel?slug=tenant2
 
+# SCRIPT para ejecutar en la base de datos común 
+```
+CREATE TABLE tenants (
+  id SERIAL PRIMARY KEY,
+  slug VARCHAR(255) UNIQUE NOT NULL,
+  db_name VARCHAR(100) UNIQUE NOT NULL,
+  db_host VARCHAR(255),
+  db_username VARCHAR(100),
+  db_password TEXT,
+  db_port INTEGER NOT NULL DEFAULT 5432,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+
+INSERT INTO tenants (slug, db_name, db_host, db_username, db_password, db_port) VALUES
+  ('tenant1', 'innoa_base', 'localhost', 'dba', 'gestion525', 3306),
+  ('tenant2', 'jdg2_base', 'localhost', 'dba', 'gestion525', 3306),
+  ('tenant3', 'cerrom_base', 'localhost', 'dba', 'gestion525', 3306);
+```
